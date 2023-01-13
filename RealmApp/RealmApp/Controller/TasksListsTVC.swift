@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-final class TasksListsTVC: UITableViewController {
+class TasksListsTVC: UITableViewController {
     
     var tasksLists: Results<TasksList>!
 
@@ -84,7 +84,11 @@ final class TasksListsTVC: UITableViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+        if let destinationVC = segue.destination as? TasksTVC,
+           let index = tableView.indexPathForSelectedRow {
+            let tasksList = tasksLists[index.row]
+            destinationVC.currentTasksList = tasksList
+        }
     }
     
     @objc func addBarButtonSystemItemSelector() {

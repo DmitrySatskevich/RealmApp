@@ -10,7 +10,7 @@ import RealmSwift
 
 let realm = try! Realm()
 
-final class StorageManager {
+class StorageManager {
     
     static func deleteAll() {
         do {
@@ -60,6 +60,43 @@ final class StorageManager {
             }
         } catch {
             print("editList error: \(error)")
+        }
+    }
+    
+    static func makeAllDone(_ tasksList: TasksList) {
+        do {
+            try realm.write {
+                tasksList.tasks.setValue(true, forKey: "isComplete")
+            }
+        } catch {
+            print("makeAllDone error: \(error)")
+        }
+    }
+
+    // MARK: - Tasks Methods
+
+    static func saveTask(_ tasksList: TasksList, task: Task) {
+        try! realm.write {
+            tasksList.tasks.append(task)
+        }
+    }
+
+    static func editTask(_ task: Task, newNameTask: String, newNote: String) {
+        try! realm.write {
+            task.name = newNameTask
+            task.note = newNote
+        }
+    }
+
+    static func deleteTask(_ task: Task) {
+        try! realm.write {
+            realm.delete(task)
+        }
+    }
+
+    static func makeDone(_ task: Task) {
+        try! realm.write {
+            task.isComplete.toggle()
         }
     }
 }

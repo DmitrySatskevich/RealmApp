@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F55FB27429706CD90019D8DD /* TasksTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55FB27329706CD90019D8DD /* TasksTVC.swift */; };
 		F5CD18B3296ECDF1000078B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CD18B2296ECDF1000078B0 /* AppDelegate.swift */; };
 		F5CD18B5296ECDF1000078B0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CD18B4296ECDF1000078B0 /* SceneDelegate.swift */; };
 		F5CD18BA296ECDF1000078B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5CD18B8296ECDF1000078B0 /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F55FB27329706CD90019D8DD /* TasksTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTVC.swift; sourceTree = "<group>"; };
 		F5CD18AF296ECDF1000078B0 /* RealmApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RealmApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5CD18B2296ECDF1000078B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5CD18B4296ECDF1000078B0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				F5CD18D4296ED533000078B0 /* TasksListsTVC.swift */,
+				F55FB27329706CD90019D8DD /* TasksTVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 			files = (
 				F5CD18D1296ED39D000078B0 /* TasksList.swift in Sources */,
 				F5CD18B3296ECDF1000078B0 /* AppDelegate.swift in Sources */,
+				F55FB27429706CD90019D8DD /* TasksTVC.swift in Sources */,
 				F5CD18B5296ECDF1000078B0 /* SceneDelegate.swift in Sources */,
 				F5CD18D7296ED7DE000078B0 /* StorageManager.swift in Sources */,
 				F5CD18D3296ED3EF000078B0 /* ListModel.swift in Sources */,

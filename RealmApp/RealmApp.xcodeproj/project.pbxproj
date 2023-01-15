@@ -19,6 +19,7 @@
 		F5CD18D3296ED3EF000078B0 /* ListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CD18D2296ED3EF000078B0 /* ListModel.swift */; };
 		F5CD18D5296ED533000078B0 /* TasksListsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CD18D4296ED533000078B0 /* TasksListsTVC.swift */; };
 		F5CD18D7296ED7DE000078B0 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CD18D6296ED7DE000078B0 /* StorageManager.swift */; };
+		F5CF9EA72971816B00B60BA6 /* UITableViewCellExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CF9EA62971816B00B60BA6 /* UITableViewCellExt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		F5CD18D2296ED3EF000078B0 /* ListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModel.swift; sourceTree = "<group>"; };
 		F5CD18D4296ED533000078B0 /* TasksListsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksListsTVC.swift; sourceTree = "<group>"; };
 		F5CD18D6296ED7DE000078B0 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		F5CF9EA62971816B00B60BA6 /* UITableViewCellExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 		F5CD18B1296ECDF1000078B0 /* RealmApp */ = {
 			isa = PBXGroup;
 			children = (
+				F5CF9EA52971812F00B60BA6 /* Extansions */,
 				F5CD18CF296ED1FC000078B0 /* Manager */,
 				F5CD18CE296ED1F1000078B0 /* Model */,
 				F5CD18CC296ED1D2000078B0 /* View */,
@@ -121,6 +124,14 @@
 				F5CD18D6296ED7DE000078B0 /* StorageManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		F5CF9EA52971812F00B60BA6 /* Extansions */ = {
+			isa = PBXGroup;
+			children = (
+				F5CF9EA62971816B00B60BA6 /* UITableViewCellExt.swift */,
+			);
+			path = Extansions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,6 +217,7 @@
 				F55FB27429706CD90019D8DD /* TasksTVC.swift in Sources */,
 				F5CD18B5296ECDF1000078B0 /* SceneDelegate.swift in Sources */,
 				F5CD18D7296ED7DE000078B0 /* StorageManager.swift in Sources */,
+				F5CF9EA72971816B00B60BA6 /* UITableViewCellExt.swift in Sources */,
 				F5CD18D3296ED3EF000078B0 /* ListModel.swift in Sources */,
 				F5CD18D5296ED533000078B0 /* TasksListsTVC.swift in Sources */,
 			);

@@ -16,9 +16,9 @@ enum TasksTVCFlow {
 struct TxtAlertData {
     
     let titleForAlert = "Task value"
-    let cancelTxt = "Cancel"
     var messageForAlert: String
     let doneButtonForAlert: String
+    let cancelTxt = "Cancel"
     
     let newTextFieldPlaceholder = "New task"
     let noteTextFieldPlaceholder = "Note"
@@ -70,10 +70,6 @@ class TasksTVC: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         section == 0 ? "Not completed tasks" : "Completed tasks"
     }
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        true
-    }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
@@ -84,7 +80,12 @@ class TasksTVC: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
         let task = indexPath.section == 0 ? notCompletedTasks[indexPath.row] : completedTasks[indexPath.row]
         
         let deleteContextItem = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in

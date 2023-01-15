@@ -50,16 +50,13 @@ class StorageManager {
     }
 
     // Редактирование текущего списка
-    static func editList(_ tasksList: TasksList,
-                         newListName: String,
-                         complition: @escaping () -> Void) {
+    static func editList(_ tasksList: TasksList, newListName: String) {
         do {
             try realm.write {
                 tasksList.name = newListName
-                complition()
             }
         } catch {
-            print("editList error: \(error)")
+            print("editList error \(error)")
         }
     }
     

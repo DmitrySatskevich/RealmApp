@@ -10,6 +10,9 @@ import RealmSwift
 
 class TasksListsTVC: UITableViewController {
     
+    var notificationToken: NotificationToken?
+    
+    // Results - отображает данные в реальном времени
     var tasksLists: Results<TasksList>!
 
     override func viewDidLoad() {
@@ -17,6 +20,7 @@ class TasksListsTVC: UITableViewController {
         
         // выгрузка из БД + сортировка
         tasksLists = StorageManager.getAllTasksLists().sorted(byKeyPath: "name")
+        addTasksListsObserver()
 
         let add = UIBarButtonItem(barButtonSystemItem: .add,
                                   target: self,
@@ -28,7 +32,6 @@ class TasksListsTVC: UITableViewController {
     @IBAction func segmentedControlChanget(_ sender: UISegmentedControl) {
         let byKeyPath = sender.selectedSegmentIndex == 0 ? "name" : "date"
         tasksLists = tasksLists.sorted(byKeyPath: byKeyPath)
-        tableView.reloadData()
     }
     
     // MARK: - Table view data source
@@ -41,13 +44,12 @@ class TasksListsTVC: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         let taskList = tasksLists[indexPath.row]
-        cell.textLabel?.text = taskList.name
-        cell.detailTextLabel?.text = taskList.tasks.count.description
+        cell.configure(with: taskList)
         return cell
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        true
     }
 
     // Свайп ячейки
@@ -59,18 +61,14 @@ class TasksListsTVC: UITableViewController {
         // Создание кнопок в ячейке
         let deleteContextItem = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
             StorageManager.deleteList(currentList)
-            tableView.deleteRows(at: [indexPath], with: .fade)
         }
 
         let editeContextItem = UIContextualAction(style: .destructive, title: "Edite") { _, _, _ in
-            self.alertForAddAndUpdatesListTasks(currentList) {
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
+            self.alertForAddAndUpdatesListTasks(currentList)
         }
 
         let doneContextItem = UIContextualAction(style: .destructive, title: "Done") { _, _, _ in
-//            StorageManager.makeAllDone(currentList)
-//            tableView.reloadRows(at: [indexPath], with: .automatic)
+            StorageManager.makeAllDone(currentList)
         }
 
         editeContextItem.backgroundColor = .orange
@@ -80,6 +78,21 @@ class TasksListsTVC: UITableViewController {
 
         return swipeAtions
     }
+    
+    /*
+    // Override to support rearranging the table view.
+    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+
+    }
+    */
+
+    /*
+    // Override to support conditional rearranging of the table view.
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the item to be re-orderable.
+        return true
+    }
+    */
     
     // MARK: - Navigation
 
@@ -92,16 +105,11 @@ class TasksListsTVC: UITableViewController {
     }
     
     @objc func addBarButtonSystemItemSelector() {
-        alertForAddAndUpdatesListTasks { [weak self] in
-            print("List added or edited")
-            self?.tableView.reloadData()
-        }
+        alertForAddAndUpdatesListTasks ()
     }
     
     // Делаем alertForAddAndUpdatesListTasks универсальной функцией
-    private func alertForAddAndUpdatesListTasks(_ tasksList: TasksList? = nil,
-                                                complition: @escaping () -> Void)
-    {
+    private func alertForAddAndUpdatesListTasks(_ tasksList: TasksList? = nil) {
         // Заголовок Alerta
         let title = tasksList == nil ? "New List" : "Edit List"
         let message = "Please insert list name"
@@ -114,21 +122,19 @@ class TasksListsTVC: UITableViewController {
         var alertTextField: UITextField!
         let saveAction = UIAlertAction(title: doneButtonName, style: .default) { _ in
             
-            guard let newListName = alertTextField.text, !newListName.isEmpty else {
+            guard let newListName = alertTextField.text,
+                    !newListName.isEmpty else {
                 return
             }
-
+            
             // логика редактирования
             if let tasksList = tasksList {
-                StorageManager.editList(tasksList, newListName: newListName, complition: complition)
+                StorageManager.editList(tasksList, newListName: newListName)
             // логика создания нового списка
             } else {
                 let tasksList = TasksList()
                 tasksList.name = newListName
                 StorageManager.saveTasksList(tasksList: tasksList)
-                complition()
-                // Анимированное появление ячейки
-//                self.tableView.insertRows(at: [IndexPath(row: self.tasksLists.count - 1, section: 0)], with: .automatic)
             }
         }
 
@@ -146,5 +152,42 @@ class TasksListsTVC: UITableViewController {
             alertTextField.placeholder = "List Name"
         }
         present(alert, animated: true)
+    }
+    
+    private func addTasksListsObserver() {
+        // Realm notification
+        notificationToken = tasksLists.observe { [weak self] change in
+            guard let self = self else { return }
+            switch change {
+            case .initial:
+                print("initial element")
+            case .update(_, let deletions, let insertions, let modifications):
+                print("deletions: \(deletions)")
+                print("insertions: \(insertions)")
+                print("modifications: \(modifications)")
+                if !modifications.isEmpty {
+                    let indexPathArray = self.createIndexPathArray(intArr: modifications)
+                    self.tableView.reloadRows(at: indexPathArray, with: .automatic)
+                }
+                if !deletions.isEmpty {
+                    let indexPathArray = self.createIndexPathArray(intArr: deletions)
+                    self.tableView.deleteRows(at: indexPathArray, with: .automatic)
+                }
+                if !insertions.isEmpty {
+                    let indexPathArray = self.createIndexPathArray(intArr: insertions)
+                    self.tableView.insertRows(at: indexPathArray, with: .automatic)
+                }
+            case .error(let error):
+                print("error: \(error)")
+            }
+        }
+    }
+    
+    private func createIndexPathArray(intArr: [Int]) -> [IndexPath] {
+        var indexPathArray = [IndexPath]()
+        for row in intArr {
+            indexPathArray.append(IndexPath(row: row, section: 0))
+        }
+        return indexPathArray
     }
 }

@@ -110,21 +110,29 @@ class TasksTVC: UITableViewController {
         
         return swipeActions
     }
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        guard let completedTasks = completedTasks,
+              var completedTasksArray = Array(completedTasks) as? [Task],
+              let notCompletedTasks = notCompletedTasks,
+              var notCompletedTasksArray = Array(notCompletedTasks) as? [Task]
+        else { return }
+        
+        if destinationIndexPath.section != sourceIndexPath.section && destinationIndexPath.section == 0 {
+            let completedTasks = completedTasksArray.remove(at: sourceIndexPath.row)
+            notCompletedTasksArray.insert(completedTasks, at: destinationIndexPath.row)
+            StorageManager.saveTheCellWhenYouDragAndDropIt(completedTasks)
+        }
+        else if destinationIndexPath.section != sourceIndexPath.section && destinationIndexPath.section == 1 {
+            let notCompletedTasks = notCompletedTasksArray.remove(at: sourceIndexPath.row)
+            completedTasksArray.insert(notCompletedTasks, at: destinationIndexPath.row)
+            StorageManager.saveTheCellWhenYouDragAndDropIt(notCompletedTasks)
+        }
     }
-    */
 
-    /*
-    // Override to support conditional rearranging of the table view.
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+        true
     }
-    */
     
     private func filteringTasks() {
         notCompletedTasks = currentTasksList?.tasks.filter("isComplete = false")

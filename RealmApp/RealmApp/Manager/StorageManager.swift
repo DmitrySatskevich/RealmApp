@@ -96,4 +96,10 @@ class StorageManager {
             task.isComplete.toggle()
         }
     }
+    
+    static func saveTheCellWhenYouDragAndDropIt(_ task: Task) {
+        try! realm.write {
+            task.isComplete.toggle()
+        }
+    }
 }

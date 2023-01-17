@@ -10,7 +10,7 @@ import RealmSwift
 
 let realm = try! Realm()
 
-final class StorageManager {
+class StorageManager {
     
     static func deleteAll() {
         do {
@@ -23,7 +23,7 @@ final class StorageManager {
     }
     
     static func getAllTasksLists() -> Results<TasksList> {
-        realm.objects(TasksList.self)//.sorted(byKeyPath: "name")
+        realm.objects(TasksList.self)
     }
     
     static func saveTasksList(tasksList: TasksList) {
@@ -50,16 +50,56 @@ final class StorageManager {
     }
 
     // Редактирование текущего списка
-    static func editList(_ tasksList: TasksList,
-                         newListName: String,
-                         complition: @escaping () -> Void) {
+    static func editList(_ tasksList: TasksList, newListName: String) {
         do {
             try realm.write {
                 tasksList.name = newListName
-                complition()
             }
         } catch {
-            print("editList error: \(error)")
+            print("editList error \(error)")
+        }
+    }
+    
+    static func makeAllDone(_ tasksList: TasksList) {
+        do {
+            try realm.write {
+                tasksList.tasks.setValue(true, forKey: "isComplete")
+            }
+        } catch {
+            print("makeAllDone error: \(error)")
+        }
+    }
+
+    // MARK: - Tasks Methods
+
+    static func saveTask(_ tasksList: TasksList, task: Task) {
+        try! realm.write {
+            tasksList.tasks.append(task)
+        }
+    }
+
+    static func editTask(_ task: Task, newNameTask: String, newNote: String) {
+        try! realm.write {
+            task.name = newNameTask
+            task.note = newNote
+        }
+    }
+
+    static func deleteTask(_ task: Task) {
+        try! realm.write {
+            realm.delete(task)
+        }
+    }
+
+    static func makeDone(_ task: Task) {
+        try! realm.write {
+            task.isComplete.toggle()
+        }
+    }
+    
+    static func saveTheCellWhenYouDragAndDropIt(_ task: Task) {
+        try! realm.write {
+            task.isComplete.toggle()
         }
     }
 }

@@ -23,7 +23,7 @@ class StorageManager {
     }
     
     static func getAllTasksLists() -> Results<TasksList> {
-        realm.objects(TasksList.self)//.sorted(byKeyPath: "name")
+        realm.objects(TasksList.self)
     }
     
     static func saveTasksList(tasksList: TasksList) {

@@ -79,18 +79,6 @@ class TasksListsTVC: UITableViewController {
         return swipeAtions
     }
     
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -159,9 +147,6 @@ class TasksListsTVC: UITableViewController {
             case .initial:
                 print("initial element")
             case .update(_, let deletions, let insertions, let modifications):
-                print("deletions: \(deletions)")
-                print("insertions: \(insertions)")
-                print("modifications: \(modifications)")
                 if !modifications.isEmpty {
                     let indexPathArray = self.createIndexPathArray(intArr: modifications)
                     self.tableView.reloadRows(at: indexPathArray, with: .automatic)
